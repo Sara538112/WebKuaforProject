@@ -1,0 +1,58 @@
+﻿@model  List<Appointments>  
+<head>
+    <link href="@Url.Content("~/css/Scudule.css")" rel="stylesheet" type="text/css" />
+</head>
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Appointment No
+                </th>
+                <th>
+                    Appointment Date
+                </th>
+                <th>
+                    Appointment Time
+                </th>
+                <th>
+                    Department
+                </th>
+                <th>
+                    Employee Name
+                </th>
+                <th>
+                    Period
+                </th>
+                <th>
+                    Approved
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@Model[i].AppNo</td>
+                    <td>@Model[i].Date</td>
+                    <td>@Model[i].Time</td>
+                    <td>@Model[i].Employee.Dep.Name</td>
+                    <td>@Model[i].Employee.FirstName @Model[i].Employee.LastName</td>
+                    <td>@Model[i].Period</td>
+                    <td>
+                        <input type="hidden" name="appointments[@i].AppNo" value="@Model[i].AppNo" />
+                        <input type="checkbox" name="appointments[@i].Approved" value="true" @(Model[i].Approved ? "checked" : "") />
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+<div class=" approvalS">
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+

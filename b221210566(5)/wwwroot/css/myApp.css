@@ -1,0 +1,9 @@
+﻿body {
+}
+.table {
+    backdrop-filter: blur(9px);
+    background-color: rgba(245, 245, 220, 0.2);
+    text-align: center;
+    align-items: center;
+    color: white;
+}

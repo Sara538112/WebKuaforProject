@@ -1,0 +1,70 @@
+﻿@{
+    List<string> depNames = new List<string>
+    {
+        "Hair Cut",
+        "Hair Care",
+        "Hair Dye",
+        "Manicure",
+        "Pedicure"
+    };
+    List<string> imageUrls = new List<string>
+        {
+        "hairCutImg.jpg", //cut
+        "hairCareImg.jpg",//care
+        "hairDyeImg.jpg",//dye
+        "manikurImg.jpg", //manikur
+        "PadikurImg.jpg"//padikur
+        };
+    List<String> description = new List<string>
+    {
+        "Transform your look with our expert hair cutting services! From classic cuts to trendy styles, we create personalized haircuts that perfectly complement your personality. Let us give you a fresh, confident look.",
+       "Nurture your hair with our advanced care treatments. Our specialists use premium products and techniques to restore shine, strength, and vitality. Indulge in a soothing experience that leaves your hair healthy and beautiful.",
+       "Discover a new shade of you with our professional hair dye services. Whether it’s bold and daring or natural and subtle, we bring your color dreams to life with precision and care. Vibrant, long-lasting results await!",
+       "Pamper your hands with our luxurious manicure services. From nail shaping to creative designs, we bring elegance and style to your fingertips. Treat yourself to a flawless finish and soft, beautiful hands.",
+       "Relax and rejuvenate with our premium pedicure treatments. Enjoy exfoliation, hydration, and nail care for feet that look and feel amazing. Step out with confidence and comfort after a session of indulgence."
+    };
+
+}
+<head>
+    <link href="@Url.Content("~/css/Servises.css")" rel="stylesheet" type="text/css" />
+</head>
+<div class="containers">
+    <div class="con-1">
+        @for (int i = 0; i < 2; i++)
+        {
+            <div class="department">
+                <h2>@depNames[i]</h2>
+                <div class="icon">
+                    <img  src="~/image/@imageUrls[i]"  />
+                </div>
+                <p>@description[i]</p>
+            </div>
+        }
+    </div>
+    <div class="con-1">
+        @for (int i = 2; i < 4; i++)
+        {
+            <div class="department">
+                <h2>@depNames[i]</h2>
+                <div class="icon">
+                    <img  src="~/image/@imageUrls[i]" />
+                </div>
+                <p>@description[i]</p>
+            </div>
+        }
+    </div>
+</div>
+<div class="con-2">
+    @for (int i = 4; i < 5; i++)
+    {
+        <div class="department">
+            <h2>@depNames[i]</h2>
+            <div class="icon" >
+                <img  src="~/image/@imageUrls[i]" />
+            </div>
+            <p>@description[i]</p>
+        </div>
+    }
+</div>
+
+</div>

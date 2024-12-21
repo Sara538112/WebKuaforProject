@@ -1,0 +1,67 @@
+﻿@model  List<Appointments>  
+<head>
+    <link href="@Url.Content("~/css/Scudule.css")" rel="stylesheet" type="text/css" />
+</head>
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Appointment No
+                </th>
+                <th>
+                    Appointment Date
+                </th>
+                <th>
+                    Appointment Time
+                </th>
+                <th>
+                    Department
+                </th>
+                 <th>
+                    Employee Name
+                </th>
+                <th>
+                    Period
+                </th>
+                <th>
+                    Approved
+                </th>
+              
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var App in Model)
+            {
+                <tr>
+                    <td>
+                        @App.AppNo
+                    </td>
+                    <td>
+                        @App.Date
+                    </td>
+                    <td>
+                        @App.Time
+                    </td>
+                    <td>
+                        @App.Employee.Dep.Name
+                    </td>
+                    <td>
+                        @App.Employee.FirstName @App.Employee.LastName
+                    </td>
+                    <td>
+                        @App.Period
+                    </td>
+                    <td>
+                        @App.Approved
+                    </td>
+
+                </tr>
+            }
+         
+        </tbody>
+    </table>
+}
+

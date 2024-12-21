@@ -1,0 +1,53 @@
+﻿@model List<Appointments>
+<head>
+    <link href="@Url.Content("~/css/myApp.css")" rel="stylesheet" type="text/css" />
+</head>
+
+
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Appointment No
+                </th>
+                <th>
+                    Appointment Date
+                </th>
+                <th>
+                    Appointment Time
+                </th>
+                <th>
+                    Employee Name
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var App in Model)
+            {
+                <tr>
+                    <td>
+                        @App.AppNo
+                    </td>
+                    <td>
+                        @App.Date
+                    </td>
+                    <td>
+                        @App.Time
+                    </td>
+                    <td>
+                        @App.Employee.FirstName @App.Employee.LastName
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class=" newApp"> 
+    <button onclick="window.location.href='AppCreate.cshtml'">
+        <img src=""/>
+    </button>
+</div>

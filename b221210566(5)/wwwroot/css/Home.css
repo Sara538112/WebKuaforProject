@@ -1,0 +1,29 @@
+﻿body {
+}
+.center {
+    margin-top: 150px;
+    padding: 20px;
+    backdrop-filter: blur(9px);
+    background-color: rgba(245, 245, 220, 0.2);
+    text-align: center;
+    align-items: center;
+    color: white;
+    border-radius: 30px;
+}
+
+    .center p {
+        margin-top: 30px;
+    }
+
+.links button a {
+    text-decoration-line: none;
+    margin: 20px;
+    color: white;
+}
+
+.links button {
+    background-color: #e0b68c;
+    border: none;
+    border-radius: 30px;
+    margin: 20px;
+}
