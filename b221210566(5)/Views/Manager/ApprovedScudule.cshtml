@@ -1,4 +1,4 @@
-﻿@model  List<Appointments>  
+﻿@model  List<AppointmentEmployee>  
 <head>
     <link href="@Url.Content("~/css/Scudule.css")" rel="stylesheet" type="text/css" />
 </head>
@@ -36,15 +36,15 @@
             @for (int i = 0; i < Model.Count; i++)
             {
                 <tr>
-                    <td>@Model[i].AppNo</td>
-                    <td>@Model[i].Date</td>
-                    <td>@Model[i].Time</td>
-                    <td>@Model[i].Employee.Dep.Name</td>
+                    <td>@Model[i].Appointment.AppNo</td>
+                    <td>@Model[i].Appointment.Date</td>
+                    <td>@Model[i].Appointment.Time</td>
+                    <td>@Model[i].Employee.Dep</td>
                     <td>@Model[i].Employee.FirstName @Model[i].Employee.LastName</td>
-                    <td>@Model[i].Period</td>
+                    <td>@Model[i].Appointment.Approved</td>
                     <td>
-                        <input type="hidden" name="appointments[@i].AppNo" value="@Model[i].AppNo" />
-                        <input type="checkbox" name="appointments[@i].Approved" value="true" @(Model[i].Approved ? "checked" : "") />
+                        <input type="hidden" name="appointments[@i].AppNo" value="@Model[i].Appointment.AppNo" />
+                        <input type="checkbox" name="appointments[@i].Approved" value="true" @(Model[i].Appointment.Approved ? "checked" : "") />
                     </td>
                 </tr>
             }

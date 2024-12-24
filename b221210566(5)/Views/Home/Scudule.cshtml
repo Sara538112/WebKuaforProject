@@ -1,4 +1,4 @@
-﻿@model  List<Appointments>  
+﻿@model  List<AppointmentEmployee>  
 <head>
     <link href="@Url.Content("~/css/Scudule.css")" rel="stylesheet" type="text/css" />
 </head>
@@ -37,13 +37,13 @@
             {
                 <tr>
                     <td>
-                        @App.AppNo
+                        @App.Appointment.AppNo
                     </td>
                     <td>
-                        @App.Date
+                        @App.Appointment.Date
                     </td>
                     <td>
-                        @App.Time
+                        @App.Appointment.Time
                     </td>
                     <td>
                         @App.Employee.Dep.Name
@@ -52,10 +52,10 @@
                         @App.Employee.FirstName @App.Employee.LastName
                     </td>
                     <td>
-                        @App.Period
+                        @App.Appointment.Period
                     </td>
                     <td>
-                        @App.Approved
+                        @App.Appointment.Approved
                     </td>
 
                 </tr>

@@ -1,8 +1,11 @@
 ﻿using b221210566_5_.Data;
 using b221210566_5_.Models;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+using System.Text;
 
 namespace b221210566_5_.Controllers
 {
@@ -10,70 +13,79 @@ namespace b221210566_5_.Controllers
     [ApiController]
     public class AppointmentController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext context;
 
         public AppointmentController(ApplicationDbContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        [HttpGet("Departments")] 
-        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
+        [HttpGet]
+        public IActionResult GetDepartments()
         {
-            return await _context.Set<Department>().ToListAsync();//perfect
-            // return await _context.Departments.ToListAsunc();
+            var Departments = context.Departments.ToList();
+
+            if (Departments?.Any() ?? false)// same
+                return NotFound();
+
+            return Ok(Departments);
         }
 
-
-        [HttpGet("EmployeesByDepartment/{departmentId}")]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployeesByDepartment(int departmentId)//perfect
+        //[HttpGet("{Id}")]
+        [HttpGet]
+        public IActionResult GetEmployees(int Id)
         {
-            var employees = await _context.Employees
-                .Include(e => e.Dep) // Department ilişkisini yükler
-                .Where(e => e.Dep.Id == departmentId)
-                .ToListAsync();
+            var Employees = context.Employees.Where(e => e.Dep.Id == Id);
+            List<Employee> employees = Employees.ToList();
 
-            if (!employees.Any())
-            {
-                return NotFound("No employees found in this department.");
-            }
+            if (employees == null || !employees.Any()) // same
+                return NotFound();
 
-            return employees;
+            return Ok(employees);
+
         }
 
-
-        [HttpGet("AvailableTimes/{employeeId}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetAvailableTimes(int employeeId)// perfect
+        //[HttpGet("{List<Employee>}")]
+        //[HttpGet("{employeeId}")]
+        [HttpGet]
+        public IActionResult EmployeeAvaliblelity(int employeeId) 
         {
-            var appointments = await _context.appointments
-                .Where(a => a.Employee.Id == employeeId.ToString() )
-                .Select(a => a.Time)
-                .ToListAsync();
+            // we can't add view for this method because it's in api controller.
 
-            // Örnek bir zaman aralığı (8:00 - 21:00 arası her saat başı)
-            var allTimes = Enumerable.Range(8, 13).Select(hour => $"{hour}:00").ToList();
+            var employee = context.Employees.FirstOrDefault(x => x.Id == employeeId.ToString());
 
-            // Uygun olmayan saatleri çıkar
-            var availableTimes = allTimes.Where(t => !appointments.Contains(TimeOnly.Parse(t))).ToList();
+            if (employee == null)
+                return new NotFoundResult();
 
-            return availableTimes;
+            TimeOnly startTime = new TimeOnly(9,0);
+            TimeOnly endTime = new TimeOnly(20,0);
+
+
+            var result = string.Empty;
+
+            var WorkTime = Enumerable.Range(0, endTime.Hour - startTime.Hour)
+                .Select(i => startTime.AddHours(i))
+                .ToList();
+
+            var BusyTime = context.appointmentEmployees
+                .Where(ae => ae.Employee.Id == employee.Id)
+                .Select(ae => new
+                {
+                    startA = ae.Appointment.Time,
+                    EndA = ae.Appointment.Time.AddMinutes((double)ae.Appointment.Period)
+                })
+                .ToList();
+
+            var AvailbleTime = WorkTime
+                .Where(Time => !BusyTime.Any(BusyTime => Time >= BusyTime.startA && Time < BusyTime.EndA))
+                .Select(Time => Time.ToString("HH:MM"))
+                .ToList();
+
+            result = $"Employee : {employee.LastName} - Avalible Time : {string.Join(",", AvailbleTime)}";
+
+            
+            return Ok(result);
         }
-
-
-        [HttpPost("Create")]
-        public async Task<ActionResult<Appointments>> CreateAppointment(Appointments appointment)//perfect
-        {
-            if (appointment == null)
-            {
-                return BadRequest("Appointment data is null.");
-            }
-
-            _context.appointments.Add(appointment);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(CreateAppointment), new { id = appointment.AppNo }, appointment);
-        }
-
 
     }
 }

@@ -1,0 +1,48 @@
+﻿@model Employee
+<form asp-controller="EmployeeController" asp-action="AddEmployee">
+    <label asp-for="FirstName"></label>
+    <input class="form-control" asp-for="FirstName" />
+    <span asp-validation-for="FirstName" class="text-danger"></span><br />
+    
+
+    <label asp-for="LastName"></label>
+    <input class="form-control" asp-for="LastName" />
+    <span asp-validation-for="LastName" class="text-danger"></span><br />
+  
+
+    <label asp-for="Email"></label>
+    <input class="form-control"  asp-for="Email" />
+    <span asp-validation-for="Email" class="text-danger"></span><br />
+   
+
+    <label asp-for="PasswordHash"></label>
+    <input class="form-control"  asp-for="PasswordHash" />
+    <span asp-validation-for="PasswordHash" class="text-danger"></span><br />
+    
+
+    <input type="submit" value="Submit" />
+</form>
+@{
+    var mesage = TempData["Mesage"] as string;
+}
+@if (!string.IsNullOrEmpty(mesage))
+{
+    if (mesage.Contains("başarıyla"))
+    {
+        <div class="alert alert-success" role="alert">
+            @mesage
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            @mesage
+        </div>
+    }
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

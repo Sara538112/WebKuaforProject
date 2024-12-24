@@ -2,7 +2,7 @@
 {
     public class Manager:User
     {
-        public ICollection<Employee> employees { get; set; }
+        public ICollection<EmployeeManager> EmployeeManager { get; set; }  // A manager can have many employees
 
     }
 }

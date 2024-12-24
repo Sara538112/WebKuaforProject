@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace b221210566_5_.Data
 {
@@ -13,7 +14,9 @@ namespace b221210566_5_.Data
         }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Manager> Manager { get; set; }
+        public DbSet<EmployeeManager> EmployeeManager { get; set; }
         public DbSet<Appointments> appointments { get; set; }
+        public DbSet<AppointmentEmployee> appointmentEmployees { get; set; }
         public DbSet<Department> Departments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -22,19 +25,35 @@ namespace b221210566_5_.Data
                 HasOne<Department>()
                 .WithMany(d => d.Employees);
 
-            builder.Entity<Employee>()
-                .HasOne<Manager>()
-                .WithMany(m => m.employees)
-                .HasForeignKey(e => e.ManagerId);// no this is different
-            
+            builder.Entity<EmployeeManager>()
+              .HasOne(em => em.Employees)  
+              .WithOne(e => e.EmployeeManager)  
+              .HasForeignKey<EmployeeManager>(em => em.EmployeeID);  // Foreign key in EmployeeManager for Employee
+
+            builder.Entity<EmployeeManager>()
+                .HasOne(em => em.Managers)  
+                .WithMany(m => m.EmployeeManager)  
+                .HasForeignKey(em => em.ManagerId);
+
+
             builder.Entity<Appointments>()
                     .HasOne<User>()
                     .WithMany(u => u.Appointments);
 
-            builder.Entity<Appointments>() // it says: Appointment has Employee yup, but employee has no ref to appointment
-            .HasOne<Employee>()
-            .WithMany(u => u.Appointments)
-            .HasForeignKey(a => a.EmployeeId);
+            // Define the relationship for AppointmentEmployee - Appointment (one-to-many)
+            builder.Entity<AppointmentEmployee>()
+                .HasOne(ae => ae.Appointment)               
+                .WithMany(a => a.AppointmentEmployees)       
+                .HasForeignKey(ae => ae.AppointmentId);      
+
+            // Define the relationship for AppointmentEmployee - Employee (many-to-one)
+            builder.Entity<AppointmentEmployee>()
+                .HasOne(ae => ae.Employee)                  
+                .WithMany(e => e.AppointmentEmployees)     
+                .HasForeignKey(ae => ae.EmployeeId);         
+             
+
+
 
             var adminId = Guid.NewGuid().ToString();
 

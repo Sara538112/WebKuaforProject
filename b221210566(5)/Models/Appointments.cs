@@ -2,7 +2,7 @@
 
 namespace b221210566_5_.Models
 {
-    // 
+ 
     public class Appointments
     {
         [Key]
@@ -14,11 +14,9 @@ namespace b221210566_5_.Models
 
         public float Period { get; set; }
 
-        public float coast { get; set; }
-        public string EmployeeId { get; set; }
+        public float coast { get; set; } 
 
-        public Employee Employee { get; set; }
-
+        public ICollection<AppointmentEmployee> AppointmentEmployees { get; set; }
         public User Customer { get; set; }
         public bool Approved { get; set; }
 

@@ -3,10 +3,10 @@
     public class Employee : User
     {
         public Department Dep {  get; set; }
-        public string ManagerId { get; set; }
-        public Manager Manager { get; set; }
 
-        public ICollection<Appointments> Appointments { get; set; }
+        public EmployeeManager EmployeeManager { get; set; }
+
+        public ICollection<AppointmentEmployee> AppointmentEmployees { get; set; }
 
     }
 }
