@@ -88,7 +88,8 @@ namespace b221210566_5_.Data
                     RoleId = adminId, // Admin rol ID'si
                     UserId = adminUserId// Admin kullanıcı ID'si
                 });
-        
+
+
             builder.Entity<Department>().HasData(
                 new Department { Id = 1, Name = "Hair Cut"},
                 new Department { Id = 2, Name = "Hair Care"},

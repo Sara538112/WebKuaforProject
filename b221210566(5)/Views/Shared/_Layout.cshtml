@@ -49,11 +49,20 @@
                         }
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
+                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="ManagerController" asp-action="AddManager">Add Manager</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeController" asp-action="AddEmployee">Add Employee</a>
+                            </li> 
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin,Employee"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AIController" asp-action="AnalyzePhoto"> AI </a>
                             </li>
                         }
                      

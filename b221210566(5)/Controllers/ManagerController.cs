@@ -32,7 +32,7 @@ namespace b221210566_5_.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult ApprovedScudule(DateOnly date)
         {
 

@@ -76,7 +76,7 @@ namespace b221210566_5_.Controllers
 
         }
         [HttpPost]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager,Admin")]
         public IActionResult SubmitApprovals(List<Appointments> appointments)
         {
             foreach (var updatedAppointment in appointments)

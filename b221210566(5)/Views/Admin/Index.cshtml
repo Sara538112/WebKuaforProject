@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+@if (!User.IsInRole("Admin"))
+{
+    <h1>Access Denied</h1>
+    <p>You do not have permission to access this page.</p>
+    return;
+}
+
+else
+{
+    <h2>Admin Panel</h2>
+    <nav>
+        <ul>
+            <li><a asp-controller="Manager" asp-action="Index">Manager</a></li>
+            <li><a asp-controller="Employee" asp-action="Index">Employee</a></li>
+        </ul>
+    </nav>
+}

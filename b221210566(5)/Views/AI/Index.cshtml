@@ -1,0 +1,25 @@
+﻿@model List<string>
+
+@{
+    ViewBag.Title = "AI ile Saç Stili Analizi";
+}
+
+
+@if (ViewBag.AIResults != null && ((List<string>)ViewBag.AIResults).Any())
+{
+    <h3>Öneriler</h3>
+    @foreach (var photo in ViewBag.AIResults as List<string>)
+    {
+        <div>
+            <img src="@photo" alt="AI Önerisi" style="width: 200px; height: 200px;" />
+        </div>
+    }
+}
+else
+{
+    <h3>Fotoğraf Yükle</h3>
+    <form asp-controller="AI" asp-action="AnalyzePhoto" enctype="multipart/form-data" method="post">
+        <input type="file" name="photo" required />
+        <button type="submit">Yükle ve Analiz Et</button>
+    </form>
+}

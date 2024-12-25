@@ -19,13 +19,15 @@ namespace b221210566_5_
 
             builder.Services.AddDefaultIdentity<User>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 3;
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //builder.Services.AddIdentity<User, IdentityRole>()
             //.AddEntityFrameworkStores<ApplicationDbContext>()
@@ -33,11 +35,10 @@ namespace b221210566_5_
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
+            builder.Services.AddSession();
             // Razor Pages ve MVC
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
-
 
             var app = builder.Build();
 
@@ -66,7 +67,7 @@ namespace b221210566_5_
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
+            app.UseSession();
             app.Run();
         }
     }
