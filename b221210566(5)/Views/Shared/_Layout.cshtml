@@ -56,6 +56,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeController" asp-action="AddEmployee">Add Employee</a>
                             </li>
                         }
+                        @if (User.IsInRole("Admin,Employee"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AIController" asp-action="AnalyzePhoto"> AI </a>
+                            </li>
+                        }
                      
                     </ul>
                     <partial name="_LoginPartial" />
