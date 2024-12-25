@@ -172,7 +172,6 @@ namespace b221210566_5_.Areas.Identity.Pages.Account
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
-
         private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
