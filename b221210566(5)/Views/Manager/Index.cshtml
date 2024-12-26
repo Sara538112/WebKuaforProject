@@ -1,5 +1,6 @@
-﻿@model Manager
-<form asp-controller="ManagerController" asp-action="AddManager">
+﻿@using b221210566_5_.Models.DTOs
+@model UserRegisterDTO
+<form asp-controller="Manager" asp-action="AddManager">
     <label asp-for="FirstName"></label>
     <input class="form-control" asp-for="FirstName" />
     <span asp-validation-for="FirstName" class="text-danger"></span><br />
@@ -15,9 +16,13 @@
     <span asp-validation-for="Email" class="text-danger"></span><br />
 
 
-    <label asp-for="PasswordHash"></label>
-    <input class="form-control" asp-for="PasswordHash" />
-    <span asp-validation-for="PasswordHash" class="text-danger"></span><br />
+    <label asp-for="Password"></label>
+    <input class="form-control" asp-for="Password" />
+    <span asp-validation-for="Password" class="text-danger"></span><br />
+
+    <label asp-for="ConfirmPassword"></label>
+    <input class="form-control" asp-for="ConfirmPassword" />
+    <span asp-validation-for="ConfirmPassword" class="text-danger"></span><br />
 
 
     <input type="submit" value="Submit" />

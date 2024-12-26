@@ -5,87 +5,76 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
+using System.Linq;
 using System.Text;
 
 namespace b221210566_5_.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AppointmentController : ControllerBase
+    public class AppointmentController : Controller
     {
-        private ApplicationDbContext context;
+        private readonly ILogger<AppointmentController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public AppointmentController(ApplicationDbContext context)
+        public AppointmentController(ILogger<AppointmentController> logger, ApplicationDbContext context)
         {
-            this.context = context;
+            _logger = logger;
+            _context = context;
         }
 
-        [HttpGet]
-        public IActionResult GetDepartments()
+        public IActionResult Index()
         {
-            var Departments = context.Departments.ToList();
-
-            if (Departments?.Any() ?? false)// same
-                return NotFound();
-
-            return Ok(Departments);
+            ViewBag.Departments = _context.Departments.ToList();
+            return View();
         }
 
-        //[HttpGet("{Id}")]
-        [HttpGet]
-        public IActionResult GetEmployees(int Id)
+        [HttpPost]
+        public IActionResult FetchEmployees(String departmentName)
         {
-            var Employees = context.Employees.Where(e => e.Dep.Id == Id);
-            List<Employee> employees = Employees.ToList();
-
-            if (employees == null || !employees.Any()) // same
-                return NotFound();
-
-            return Ok(employees);
-
-        }
-
-        //[HttpGet("{List<Employee>}")]
-        //[HttpGet("{employeeId}")]
-        [HttpGet]
-        public IActionResult EmployeeAvaliblelity(int employeeId) 
-        {
-            // we can't add view for this method because it's in api controller.
-
-            var employee = context.Employees.FirstOrDefault(x => x.Id == employeeId.ToString());
-
-            if (employee == null)
-                return new NotFoundResult();
-
-            TimeOnly startTime = new TimeOnly(9,0);
-            TimeOnly endTime = new TimeOnly(20,0);
-
-
-            var result = string.Empty;
-
-            var WorkTime = Enumerable.Range(0, endTime.Hour - startTime.Hour)
-                .Select(i => startTime.AddHours(i))
+            var departments = _context.Departments.ToList();
+            var employees = _context.Employees
+                .Where(e => e.Dep.Name == departmentName)
                 .ToList();
 
-            var BusyTime = context.appointmentEmployees
-                .Where(ae => ae.Employee.Id == employee.Id)
-                .Select(ae => new
-                {
-                    startA = ae.Appointment.Time,
-                    EndA = ae.Appointment.Time.AddMinutes((double)ae.Appointment.Period)
-                })
-                .ToList();
-
-            var AvailbleTime = WorkTime
-                .Where(Time => !BusyTime.Any(BusyTime => Time >= BusyTime.startA && Time < BusyTime.EndA))
-                .Select(Time => Time.ToString("HH:MM"))
-                .ToList();
-
-            result = $"Employee : {employee.LastName} - Avalible Time : {string.Join(",", AvailbleTime)}";
-
-            
-            return Ok(result);
+            ViewBag.Departments = departments;
+            ViewBag.Employees = employees;
+            return View("Index");
         }
+
+        [HttpPost]
+        public IActionResult FetchAvailableTimes(string employeeName, DateOnly date)
+        {
+            // Belirli bir çalışanın belirli bir tarihteki uygun saatlerini al
+            var availableTimes = GetAvailableTimes(employeeName, date);
+
+            // ViewBag ile uygun saatleri görünüme gönder
+            ViewBag.AvailableTimes = availableTimes;
+            return View("Index");
+        }
+
+        public string GetAvailableTimes(string employeeId, DateOnly date)
+        {
+            // Çalışanın belirli bir tarihteki randevularını al
+            var appointments = _context.appointmentEmployees
+                .Where(a => a.Employee.Id == employeeId && a.Appointment.Date == date)
+                .Select(a => a.Appointment.Time)
+                .ToList();
+
+            // Tüm zaman aralıklarını oluştur (09:00'dan 17:00'ye kadar saat başı)
+            var allTimes = Enumerable.Range(9, 9) // Saatler: 9, 10, ..., 17
+                .Select(hour => TimeOnly.FromTimeSpan(new TimeSpan(hour, 0, 0))) // Saatleri TimeOnly'e dönüştür
+                .ToList();
+
+            // Uygun saatleri belirle
+            var availableTimes = allTimes
+                .Where(t => !appointments.Contains(t)) // Çakışmayan saatler
+                .Select(t => t.ToString("HH:mm")) // String'e dönüştür
+                .ToList();
+
+            // Saatleri düz bir string olarak döndür (virgülle ayrılmış)
+            return string.Join(",", availableTimes);
+        }
+
 
     }
+
 }

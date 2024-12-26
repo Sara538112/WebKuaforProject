@@ -1,0 +1,106 @@
+﻿
+
+<h2>Randevu Oluştur</h2>
+
+<!-- Department Select Dropdown -->
+<select id="departmentSelect" name="departmentId" onchange="fetchEmployees()">
+    <option value="">-- Departman Seç --</option>
+    @foreach (var department in ViewBag.Departments)
+    {
+        <option value="@department.Name">@department.Name</option>
+    }
+</select>
+
+<!-- Employee Select Dropdown (Populated dynamically) -->
+@if (ViewBag.Employees != null)
+{
+    <select id="employeeSelect" name="employeeId" onchange="fetchAvailableTimes()">
+        <option value="">-- Çalışan Seç --</option>
+        @foreach (var employee in Model)
+        {
+            <option value="@employee.Id">
+                @employee.Name - @employee.Dep.Name
+            </option>
+        }
+    </select>
+}
+else
+{
+    <select id="employeeSelect" name="employeeId"  >
+        <option value="">Employee</option>
+    </select>
+}
+
+<!-- Available Times Select Dropdown -->
+<select id="availableTimesSelect" name="appointmentTime" >
+    <option value="">-- Uygun Saat Seç --</option>
+</select>
+
+@* <script>
+    function fetchEmployees() {
+        const departmentId = document.getElementById('departmentSelect').value;
+        const form = new FormData();
+        form.append("departmentId", departmentId);
+
+        fetch('/ControllerName/FetchEmployees', {
+            method: 'POST',
+            body: form
+        }).then(response => response.text())
+            .then(html => document.body.innerHTML = html);
+    }
+
+    function fetchAvailableTimes() {
+        const employeeId = document.getElementById('employeeSelect').value;
+        const date = new Date().toISOString().split('T')[0];
+
+        const form = new FormData();
+        form.append("employeeId", employeeId);
+        form.append("date", date);
+
+        fetch('/ControllerName/FetchAvailableTimes', {
+            method: 'POST',
+            body: form
+        }).then(response => response.text())
+            .then(html => document.body.innerHTML = html);
+    }
+</script>
+ *@
+
+<script>
+    function fetchEmployees() {
+        const departmentId = document.getElementById('departmentSelect').value;
+        const form = new FormData();
+        form.append("departmentId", departmentId);
+
+        fetch('/ControllerName/FetchEmployees', {
+            method: 'POST',
+            body: form
+        })
+            .then(response => response.text())
+            .then(html => {
+                // Update only the Employee dropdown part of the page
+                document.getElementById('employeeSelectContainer').innerHTML = html;
+            })
+            .catch(error => console.error('Error fetching employees:', error));
+    }
+
+    function fetchAvailableTimes() {
+        const employeeId = document.getElementById('employeeSelect').value;
+        const date = new Date().toISOString().split('T')[0];
+
+        const form = new FormData();
+        form.append("employeeId", employeeId);
+        form.append("date", date);
+
+        fetch('/ControllerName/FetchAvailableTimes', {
+            method: 'POST',
+            body: form
+        })
+            .then(response => response.text())
+            .then(html => {
+                // Update only the Available Times dropdown part of the page
+                document.getElementById('availableTimesSelect').innerHTML = html;
+            })
+            .catch(error => console.error('Error fetching available times:', error));
+    }
+</script>

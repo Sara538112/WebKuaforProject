@@ -17,7 +17,7 @@ namespace b221210566_5_.Controllers
             _roleManager = roleManager;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View();
