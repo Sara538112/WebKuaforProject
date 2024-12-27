@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using b221210566_5_.Data;
@@ -11,9 +12,11 @@ using b221210566_5_.Data;
 namespace b221210566_5_.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241227165659_updatedata")]
+    partial class updatedata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,25 +53,25 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4c4d19a4-030b-4b5f-9713-d7fb7d5f9862",
+                            Id = "73b478fe-7bd3-4201-956c-828fd892200c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f9708ff2-b2fd-488c-89a7-d19c28d6a91a",
+                            Id = "3f50b4fe-3eee-4029-a945-1e270a7ea87b",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "596aa8cf-7c3b-45c1-974b-4aae48dc7477",
+                            Id = "cb3c3a83-e54d-4b58-bcc9-9d4990dd64b4",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "a3de0de7-515b-4ade-be45-85054fcaa040",
+                            Id = "c54c5a1b-e38b-4c68-a095-3f40b4766104",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -165,8 +168,8 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "943473f4-2aad-45ca-8041-40874d3a42b8",
-                            RoleId = "4c4d19a4-030b-4b5f-9713-d7fb7d5f9862"
+                            UserId = "01ce0642-e1bb-43e8-9548-310d7dce2887",
+                            RoleId = "73b478fe-7bd3-4201-956c-828fd892200c"
                         });
                 });
 
@@ -255,34 +258,6 @@ namespace b221210566_5_.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("appointments");
-                });
-
-            modelBuilder.Entity("b221210566_5_.Models.DTOs.UserRegisterDTO", b =>
-                {
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Department")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.ToTable("UserRegisterDTOs");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.DepEmployee", b =>
@@ -463,18 +438,18 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "943473f4-2aad-45ca-8041-40874d3a42b8",
+                            Id = "01ce0642-e1bb-43e8-9548-310d7dce2887",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "31fd7724-22c5-4ba2-9a1f-f01d26723803",
+                            ConcurrencyStamp = "09fb7ff4-83ef-4d5d-a59c-79003893e4a3",
                             Email = "b221210566@ogr.sakarya.edu.tr",
                             EmailConfirmed = true,
                             FirstName = "Sara",
                             LastName = "Mohamed",
                             LockoutEnabled = false,
                             NormalizedEmail = "B221210566@OGR.SAKARYA.EDU.TR",
-                            PasswordHash = "AQAAAAIAAYagAAAAENOgmtXmRNGrxPHlme0TbKWy60cb6J13JPhhSR0lM4xB+I4s4tOu9uIF1rXjk5Xyuw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF3yIWHfTRdu+ItOUItULnJWeeedj/L1gv/wQ27AM5N+lo8G6XsDev8N+SOrUh/57w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0c4e6c62-eced-4bfb-b9f4-513cd84db4dd",
+                            SecurityStamp = "b49dbf8c-6f3d-4a15-bd63-8a3eb89f6833",
                             TwoFactorEnabled = false
                         });
                 });

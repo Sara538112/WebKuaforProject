@@ -14,11 +14,13 @@ namespace b221210566_5_.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context , UserManager<User> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -30,11 +32,13 @@ namespace b221210566_5_.Controllers
         {
             return View();
         }
-        public IActionResult Team(Employee employee)
+        public IActionResult Team()
         {
-            var EmployeeList = _context.Employees.ToList(); // we must get employees from database not local defined list
+            var employees = _context.Employees.ToList();
+            var employees2 = _userManager.GetUsersInRoleAsync("Employee").Result;
 
-            return View(EmployeeList);
+            return View(employees);
+
         }
 
 
@@ -57,7 +61,7 @@ namespace b221210566_5_.Controllers
             return View(appointments);
         }
 
-        [Authorize(Roles = "Employee,Manager")]
+        [Authorize(Roles = "Employee,Manager,Admin")]
         public IActionResult Scudule(DateOnly date)
         {
 

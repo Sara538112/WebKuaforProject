@@ -1,10 +1,11 @@
 ﻿using b221210566_5_.Data;
 using b221210566_5_.Models;
-using b221210566_5_.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace b221210566_5_.Controllers
@@ -26,6 +27,13 @@ namespace b221210566_5_.Controllers
 
         public IActionResult Index()
         {
+            var selectListItem = new List<SelectListItem>();
+            var deps = _context.Departments.ToList();
+            foreach(var dep in deps)
+            {
+                selectListItem.Add(new SelectListItem() { Text = dep.Name, Value = dep.Name});
+            }
+            ViewData["DepeartmentSelectList"] = selectListItem;
             return View(); 
         }
 
@@ -33,29 +41,36 @@ namespace b221210566_5_.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee(UserRegisterDTO usr)
         {
-            User emp = new User()
+            var dep = _context.Departments.FirstOrDefault(x => x.Name == usr.Department);
+            Employee emp = new Employee()
             {
                 Email = usr.Email,
                 FirstName = usr.FirstName,
                 LastName = usr.LastName,
+                DepEmployees = new DepEmployee()
             };
+
+            // Create a new DepEmployee to link the Employee with the Department
+            DepEmployee depEmployee = new DepEmployee()
+            {
+                Department = dep, // Assign the found department
+                Employee = emp    // Link the employee
+            };
+            
             await _userStore.SetUserNameAsync(emp, usr.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(emp, usr.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(emp, usr.Password);
             if (result.Succeeded)
             {
+                var test = _context.Employees.ToList();
                 await _userManager.AddToRoleAsync(emp, "Employee");
+                _context.Employees.Add(emp);
+                _context.SaveChanges();
             }
             return RedirectToAction("ListEmployees");
         }
 
-        public IActionResult ListEmployees()
-        {
-            var employees = _context.Employees.ToList();  // this is a problem, or not ?
-            var employees2 = _userManager.GetUsersInRoleAsync("Employee").Result;
-
-            return View(employees);
-        }
+        
         private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)

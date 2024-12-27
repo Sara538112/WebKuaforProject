@@ -12,8 +12,8 @@ using b221210566_5_.Data;
 namespace b221210566_5_.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241222115648_lastupdated")]
-    partial class lastupdated
+    [Migration("20241227162347_updateadmin")]
+    partial class updateadmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,25 +53,25 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b14e6f82-dda7-4397-b393-bb41c369987c",
+                            Id = "19b9e73e-9520-490f-9d98-0113c800ec2b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "eead68f7-6ce8-40b5-a6d9-0e0ac3241222",
+                            Id = "0275d911-2625-48cf-a193-2f55c25f252b",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "5ed7f15f-2526-4e69-ae01-7d33b6c8b28c",
+                            Id = "5e69b946-71a9-4575-af83-28c3d2700ab1",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "3807914b-1aa4-4882-b533-254b6cd7d696",
+                            Id = "096a773f-325e-4a61-9d2b-d7fa83852822",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -168,8 +168,8 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "c921a371-a2b8-4ef5-8015-339af1e76131",
-                            RoleId = "b14e6f82-dda7-4397-b393-bb41c369987c"
+                            UserId = "f61393b4-88c8-40a2-a67d-66573d971705",
+                            RoleId = "19b9e73e-9520-490f-9d98-0113c800ec2b"
                         });
                 });
 
@@ -204,6 +204,10 @@ namespace b221210566_5_.Migrations
 
                     b.Property<int>("AppointmentId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("AvaliableTime")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("EmployeeId")
                         .IsRequired()
@@ -254,6 +258,31 @@ namespace b221210566_5_.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("appointments");
+                });
+
+            modelBuilder.Entity("b221210566_5_.Models.DepEmployee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.ToTable("DepEmployees");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.Department", b =>
@@ -409,19 +438,19 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c921a371-a2b8-4ef5-8015-339af1e76131",
+                            Id = "f61393b4-88c8-40a2-a67d-66573d971705",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e85e73b9-cee5-40e1-b113-62ae2127e6b2",
+                            ConcurrencyStamp = "783431d1-7f6f-4408-8026-b8f3762e189c",
                             Email = "b221210566@ogr.sakarya.edu.tr",
                             EmailConfirmed = true,
                             FirstName = "Sara",
                             LastName = "Mohamed",
                             LockoutEnabled = false,
-                            NormalizedEmail = "b221210566@ogr.sakarya.edu.tr",
-                            NormalizedUserName = "SaraMohamed",
-                            PasswordHash = "AQAAAAIAAYagAAAAENeLlZ+IjPQjADwUtHowjgahBh2HFfYMvI+/l4AQJ8EJSoBmcKixrTI2JWfgbR4JMw==",
+                            NormalizedEmail = "B221210566@OGR.SAKARYA.EDU.TR",
+                            NormalizedUserName = "SARAMOHAMED",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM2HBbv7MiTPb7LJPBkqlK8dGwXohbx0lNV80/3tu2q37CoMD2o/6lnhIa7c/wUoZA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b861efe7-3b67-4a32-847e-82c1517570dc",
+                            SecurityStamp = "b12811ce-19f7-4019-a8e7-cf8a0859d934",
                             TwoFactorEnabled = false,
                             UserName = "Sara Mohamed"
                         });
@@ -430,16 +459,6 @@ namespace b221210566_5_.Migrations
             modelBuilder.Entity("b221210566_5_.Models.Employee", b =>
                 {
                     b.HasBaseType("b221210566_5_.Models.User");
-
-                    b.Property<int>("DepId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("integer");
-
-                    b.HasIndex("DepId");
-
-                    b.HasIndex("DepartmentId");
 
                     b.HasDiscriminator().HasValue("Employee");
                 });
@@ -534,6 +553,25 @@ namespace b221210566_5_.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("b221210566_5_.Models.DepEmployee", b =>
+                {
+                    b.HasOne("b221210566_5_.Models.Department", "Department")
+                        .WithMany("DepEmployees")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("b221210566_5_.Models.Employee", "Employee")
+                        .WithOne("DepEmployees")
+                        .HasForeignKey("b221210566_5_.Models.DepEmployee", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("b221210566_5_.Models.EmployeeManager", b =>
                 {
                     b.HasOne("b221210566_5_.Models.Employee", "Employees")
@@ -553,23 +591,6 @@ namespace b221210566_5_.Migrations
                     b.Navigation("Managers");
                 });
 
-            modelBuilder.Entity("b221210566_5_.Models.Employee", b =>
-                {
-                    b.HasOne("b221210566_5_.Models.Department", "Dep")
-                        .WithMany()
-                        .HasForeignKey("DepId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("b221210566_5_.Models.Department", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dep");
-                });
-
             modelBuilder.Entity("b221210566_5_.Models.Appointments", b =>
                 {
                     b.Navigation("AppointmentEmployees");
@@ -577,7 +598,7 @@ namespace b221210566_5_.Migrations
 
             modelBuilder.Entity("b221210566_5_.Models.Department", b =>
                 {
-                    b.Navigation("Employees");
+                    b.Navigation("DepEmployees");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.User", b =>
@@ -588,6 +609,9 @@ namespace b221210566_5_.Migrations
             modelBuilder.Entity("b221210566_5_.Models.Employee", b =>
                 {
                     b.Navigation("AppointmentEmployees");
+
+                    b.Navigation("DepEmployees")
+                        .IsRequired();
 
                     b.Navigation("EmployeeManager")
                         .IsRequired();

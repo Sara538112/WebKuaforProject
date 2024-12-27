@@ -1,5 +1,8 @@
-﻿@using b221210566_5_.Models.DTOs
+﻿using b221210566_5_.Models.DTOs
 @model UserRegisterDTO
+@{
+    List<SelectListItem> deps = (List<SelectListItem>)ViewData["DepeartmentSelectList"];
+}
 <form asp-controller="Employee" asp-action="AddEmployee">
     <label asp-for="FirstName"></label>
     <input class="form-control" asp-for="FirstName" />
@@ -23,7 +26,10 @@
     <label asp-for="ConfirmPassword"></label>
     <input class="form-control" asp-for="ConfirmPassword" />
     <span asp-validation-for="ConfirmPassword" class="text-danger"></span><br />
+    
 
+    <select id="departmentSelect" name="Department" asp-items = "@deps" asp-for="Department">
+    </select>
 
     <input type="submit" value="Submit" />
 </form>

@@ -2,7 +2,8 @@
 {
     public class Employee : User
     {
-        public Department Dep {  get; set; }
+        public DepEmployee DepEmployees { get; set; }
+     
 
         public EmployeeManager EmployeeManager { get; set; }
 

@@ -18,12 +18,23 @@ namespace b221210566_5_.Data
         public DbSet<Appointments> appointments { get; set; }
         public DbSet<AppointmentEmployee> appointmentEmployees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<DepEmployee> DepEmployees { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Employee>().
-                HasOne<Department>()
-                .WithMany(d => d.Employees);
+            
+
+            builder.Entity<DepEmployee>()
+           .HasOne(de => de.Department)// one department has many employees
+           .WithMany(d => d.DepEmployees) 
+           .HasForeignKey(de => de.DepartmentId);
+
+            builder.Entity<DepEmployee>()
+             .HasOne(de => de.Employee) // one employee has one department
+             .WithOne(e=>e.DepEmployees)  
+             .HasForeignKey<DepEmployee>(de => de.EmployeeId);  
+
 
             builder.Entity<EmployeeManager>()
               .HasOne(em => em.Employees)  
@@ -68,12 +79,10 @@ namespace b221210566_5_.Data
             var adminUser = new User
             {
                 Id = adminUserId,
-                UserName = "Sara Mohamed",
                 FirstName = "Sara",
-                LastName ="Mohamed",
-                NormalizedUserName = "SaraMohamed",
+                LastName = "Mohamed",
                 Email = "b221210566@ogr.sakarya.edu.tr",
-                NormalizedEmail = "b221210566@ogr.sakarya.edu.tr",
+                NormalizedEmail = "B221210566@OGR.SAKARYA.EDU.TR",
                 EmailConfirmed = true,
                 PasswordHash = new PasswordHasher<User>().HashPassword(null, "sau"),
                 SecurityStamp = Guid.NewGuid().ToString("D"),
@@ -88,6 +97,7 @@ namespace b221210566_5_.Data
                     RoleId = adminId, // Admin rol ID'si
                     UserId = adminUserId// Admin kullanıcı ID'si
                 });
+
 
 
             builder.Entity<Department>().HasData(

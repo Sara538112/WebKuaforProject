@@ -10,7 +10,7 @@ namespace b221210566_5_.Models
         public string Name { get; set; }
 
 
-        public ICollection<Employee> Employees { get; set; }
+        public ICollection<DepEmployee> DepEmployees { get; set; }
 
     }
 }

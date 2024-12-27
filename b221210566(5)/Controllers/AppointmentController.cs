@@ -31,8 +31,8 @@ namespace b221210566_5_.Controllers
         public IActionResult FetchEmployees(String departmentName)
         {
             var departments = _context.Departments.ToList();
-            var employees = _context.Employees
-                .Where(e => e.Dep.Name == departmentName)
+            var employees = _context.DepEmployees
+                .Where(e => e.Department.Name == departmentName)
                 .ToList();
 
             ViewBag.Departments = departments;
@@ -74,6 +74,7 @@ namespace b221210566_5_.Controllers
             return string.Join(",", availableTimes);
         }
 
+       
 
     }
 

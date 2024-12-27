@@ -12,8 +12,8 @@ using b221210566_5_.Data;
 namespace b221210566_5_.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241221203707_AddTables")]
-    partial class AddTables
+    [Migration("20241227185602_loginpage")]
+    partial class loginpage
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,25 +53,25 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "205ef2fe-b916-4975-8091-926f4c7a5bba",
+                            Id = "4c4d19a4-030b-4b5f-9713-d7fb7d5f9862",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "3a28b3a5-0f1c-4be4-b298-4bea3acab5c9",
+                            Id = "f9708ff2-b2fd-488c-89a7-d19c28d6a91a",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "71218633-20bc-4c82-a1b5-cdc5c8688a04",
+                            Id = "596aa8cf-7c3b-45c1-974b-4aae48dc7477",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "77114515-3f20-4517-8ee9-f5be9108095e",
+                            Id = "a3de0de7-515b-4ade-be45-85054fcaa040",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -168,8 +168,8 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "5b5733fc-a5e3-4ceb-8edf-49f43ef22307",
-                            RoleId = "205ef2fe-b916-4975-8091-926f4c7a5bba"
+                            UserId = "943473f4-2aad-45ca-8041-40874d3a42b8",
+                            RoleId = "4c4d19a4-030b-4b5f-9713-d7fb7d5f9862"
                         });
                 });
 
@@ -194,6 +194,34 @@ namespace b221210566_5_.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("b221210566_5_.Models.AppointmentEmployee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("AvaliableTime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("appointmentEmployees");
+                });
+
             modelBuilder.Entity("b221210566_5_.Models.Appointments", b =>
                 {
                     b.Property<int>("AppNo")
@@ -211,19 +239,14 @@ namespace b221210566_5_.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EmployeeId1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<float>("Period")
                         .HasColumnType("real");
 
                     b.Property<TimeOnly>("Time")
                         .HasColumnType("time without time zone");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.Property<float>("coast")
                         .HasColumnType("real");
@@ -232,11 +255,62 @@ namespace b221210566_5_.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("appointments");
+                });
+
+            modelBuilder.Entity("b221210566_5_.Models.DTOs.UserRegisterDTO", b =>
+                {
+                    b.Property<string>("ConfirmPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.ToTable("UserRegisterDTOs");
+                });
+
+            modelBuilder.Entity("b221210566_5_.Models.DepEmployee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
+
+                    b.ToTable("DepEmployees");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.Department", b =>
@@ -281,6 +355,32 @@ namespace b221210566_5_.Migrations
                             Id = 5,
                             Name = "Padikur"
                         });
+                });
+
+            modelBuilder.Entity("b221210566_5_.Models.EmployeeManager", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("EmployeeID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ManagerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("EmployeeID")
+                        .IsUnique();
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("EmployeeManager");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.User", b =>
@@ -366,49 +466,25 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5b5733fc-a5e3-4ceb-8edf-49f43ef22307",
+                            Id = "943473f4-2aad-45ca-8041-40874d3a42b8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "61c582c6-070f-4c69-9963-ea8af76bf105",
+                            ConcurrencyStamp = "31fd7724-22c5-4ba2-9a1f-f01d26723803",
                             Email = "b221210566@ogr.sakarya.edu.tr",
                             EmailConfirmed = true,
                             FirstName = "Sara",
                             LastName = "Mohamed",
                             LockoutEnabled = false,
-                            NormalizedEmail = "b221210566@ogr.sakarya.edu.tr",
-                            NormalizedUserName = "SaraMohamed",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHozk0MSNeJpb3mI/6tN7U3A+i8EIAm246o59gkvUUqMdA/ECtY4elrc/vmlCFLSNw==",
+                            NormalizedEmail = "B221210566@OGR.SAKARYA.EDU.TR",
+                            PasswordHash = "AQAAAAIAAYagAAAAENOgmtXmRNGrxPHlme0TbKWy60cb6J13JPhhSR0lM4xB+I4s4tOu9uIF1rXjk5Xyuw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1fda8839-2294-4fae-9b29-1bbf03658e80",
-                            TwoFactorEnabled = false,
-                            UserName = "Sara Mohamed"
+                            SecurityStamp = "0c4e6c62-eced-4bfb-b9f4-513cd84db4dd",
+                            TwoFactorEnabled = false
                         });
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.Employee", b =>
                 {
                     b.HasBaseType("b221210566_5_.Models.User");
-
-                    b.Property<int>("DepId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ManagerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ManagerId1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasIndex("DepId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("ManagerId");
-
-                    b.HasIndex("ManagerId1");
 
                     b.HasDiscriminator().HasValue("Employee");
                 });
@@ -471,6 +547,25 @@ namespace b221210566_5_.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("b221210566_5_.Models.AppointmentEmployee", b =>
+                {
+                    b.HasOne("b221210566_5_.Models.Appointments", "Appointment")
+                        .WithMany("AppointmentEmployees")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("b221210566_5_.Models.Employee", "Employee")
+                        .WithMany("AppointmentEmployees")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("b221210566_5_.Models.Appointments", b =>
                 {
                     b.HasOne("b221210566_5_.Models.User", "Customer")
@@ -479,55 +574,57 @@ namespace b221210566_5_.Migrations
 
                     b.HasOne("b221210566_5_.Models.User", null)
                         .WithMany("Appointments")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("b221210566_5_.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("b221210566_5_.Models.Employee", b =>
+            modelBuilder.Entity("b221210566_5_.Models.DepEmployee", b =>
                 {
-                    b.HasOne("b221210566_5_.Models.Department", "Dep")
-                        .WithMany()
-                        .HasForeignKey("DepId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("b221210566_5_.Models.Department", null)
-                        .WithMany("Employees")
+                    b.HasOne("b221210566_5_.Models.Department", "Department")
+                        .WithMany("DepEmployees")
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("b221210566_5_.Models.Manager", null)
-                        .WithMany("employees")
+                    b.HasOne("b221210566_5_.Models.Employee", "Employee")
+                        .WithOne("DepEmployees")
+                        .HasForeignKey("b221210566_5_.Models.DepEmployee", "EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("b221210566_5_.Models.EmployeeManager", b =>
+                {
+                    b.HasOne("b221210566_5_.Models.Employee", "Employees")
+                        .WithOne("EmployeeManager")
+                        .HasForeignKey("b221210566_5_.Models.EmployeeManager", "EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("b221210566_5_.Models.Manager", "Managers")
+                        .WithMany("EmployeeManager")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("b221210566_5_.Models.Manager", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Employees");
 
-                    b.Navigation("Dep");
+                    b.Navigation("Managers");
+                });
 
-                    b.Navigation("Manager");
+            modelBuilder.Entity("b221210566_5_.Models.Appointments", b =>
+                {
+                    b.Navigation("AppointmentEmployees");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.Department", b =>
                 {
-                    b.Navigation("Employees");
+                    b.Navigation("DepEmployees");
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.User", b =>
@@ -535,9 +632,20 @@ namespace b221210566_5_.Migrations
                     b.Navigation("Appointments");
                 });
 
+            modelBuilder.Entity("b221210566_5_.Models.Employee", b =>
+                {
+                    b.Navigation("AppointmentEmployees");
+
+                    b.Navigation("DepEmployees")
+                        .IsRequired();
+
+                    b.Navigation("EmployeeManager")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("b221210566_5_.Models.Manager", b =>
                 {
-                    b.Navigation("employees");
+                    b.Navigation("EmployeeManager");
                 });
 #pragma warning restore 612, 618
         }
