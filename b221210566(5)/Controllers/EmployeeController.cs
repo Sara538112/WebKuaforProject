@@ -47,7 +47,6 @@ namespace b221210566_5_.Controllers
                 Email = usr.Email,
                 FirstName = usr.FirstName,
                 LastName = usr.LastName,
-                DepEmployees = new DepEmployee()
             };
 
             // Create a new DepEmployee to link the Employee with the Department
@@ -56,7 +55,10 @@ namespace b221210566_5_.Controllers
                 Department = dep, // Assign the found department
                 Employee = emp    // Link the employee
             };
-            
+
+            emp.DepEmployees = depEmployee;
+
+
             await _userStore.SetUserNameAsync(emp, usr.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(emp, usr.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(emp, usr.Password);
@@ -66,8 +68,11 @@ namespace b221210566_5_.Controllers
                 await _userManager.AddToRoleAsync(emp, "Employee");
                 _context.Employees.Add(emp);
                 _context.SaveChanges();
+
+                _context.DepEmployees.Add(depEmployee);
+                _context.SaveChanges();
             }
-            return RedirectToAction("ListEmployees");
+            return RedirectToAction("Home","Team");
         }
 
         

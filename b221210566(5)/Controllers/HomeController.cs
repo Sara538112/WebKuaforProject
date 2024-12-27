@@ -34,8 +34,10 @@ namespace b221210566_5_.Controllers
         }
         public IActionResult Team()
         {
-            var employees = _context.Employees.ToList();
-            var employees2 = _userManager.GetUsersInRoleAsync("Employee").Result;
+            var employees = _context.Employees
+                            .Include(e => e.DepEmployees) // Ensure DepEmployees is loaded
+                            .ThenInclude(de => de.Department) // Ensure Department is loaded
+                            .ToList();
 
             return View(employees);
 

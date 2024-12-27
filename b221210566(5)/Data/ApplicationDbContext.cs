@@ -28,12 +28,16 @@ namespace b221210566_5_.Data
             builder.Entity<DepEmployee>()
            .HasOne(de => de.Department)// one department has many employees
            .WithMany(d => d.DepEmployees) 
-           .HasForeignKey(de => de.DepartmentId);
+           .HasForeignKey(de => de.DepartmentId)
+           .OnDelete(DeleteBehavior.Cascade);
+
 
             builder.Entity<DepEmployee>()
              .HasOne(de => de.Employee) // one employee has one department
              .WithOne(e=>e.DepEmployees)  
-             .HasForeignKey<DepEmployee>(de => de.EmployeeId);  
+             .HasForeignKey<DepEmployee>(de => de.EmployeeId)
+             .OnDelete(DeleteBehavior.Cascade);
+
 
 
             builder.Entity<EmployeeManager>()

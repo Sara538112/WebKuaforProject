@@ -43,14 +43,12 @@ namespace b221210566_5_.Controllers
             {
                 await _userManager.AddToRoleAsync(mng, "Manager");
             }
-            return RedirectToAction("ListManager");
+            return RedirectToAction("AddSuccesed");
         }
-        public IActionResult ListManager()
+        public IActionResult AddSuccesed()
         {
-            var manager = _context.Employees.ToList();  // this is a problem, or not ?
-            var manager1 = _userManager.GetUsersInRoleAsync("Manager").Result;
-
-            return View(manager);
+            ViewBag.Message = "Manager successfully added.";
+            return View();
         }
         private IUserEmailStore<User> GetEmailStore()
         {
