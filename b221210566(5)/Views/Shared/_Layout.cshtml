@@ -70,6 +70,13 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="AIController" asp-action="AnalyzePhoto"> AI </a>
                             </li>
                         }
+                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+
+                         {
+                             <li class="nav-item">
+                                 <a class="nav-link text-dark" asp-area="" asp-controller="ApiConsume" asp-action="Index"> Delete </a>
+                             </li>
+                         }
                        
                         
                     </ul>
