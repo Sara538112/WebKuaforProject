@@ -61,9 +61,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Add Employee</a>
                             </li> 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Admin Panel</a>
-                            </li>
+                         
                         }
                         @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
 

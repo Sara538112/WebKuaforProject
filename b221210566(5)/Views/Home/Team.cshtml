@@ -1,15 +1,16 @@
 ﻿@model List<Employee>
 
 <head>
-    <link href="@Url.Content("~/css/Team.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/css/Teams.css")" rel="stylesheet" type="text/css" />
 </head>
 <div class="Container">
-    <div class="card">
-        @foreach (var employee in Model)
-        {
+   
+    @foreach (var employee in Model)
+    {
+        <div class="card">
             <h3>@employee.FirstName @employee.LastName</h3>
-            <h5>@employee.DepEmployees.Department.Name</h5>
-
-        }
-    </div>
+            <h5>@employee.DepEmployees?.Department?.Name</h5>
+        </div>
+    }
+ 
 </div>

@@ -1,0 +1,14 @@
+﻿@{
+    string viewBag = ViewBag.Message;
+}
+
+<h2>
+    @viewBag
+</h2>
+
+@if (viewBag != null)
+{
+    <div class="alert alert-success">
+        @viewBag
+    </div>
+}

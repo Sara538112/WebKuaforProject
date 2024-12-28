@@ -1,19 +1,14 @@
-﻿body {
-    background-image: url("https://i.pinimg.com/736x/9d/04/ad/9d04ad766bf63af247e87717483aa128.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-
+﻿
 .navbar {
     backdrop-filter: blur(9px);
 }
 
-form {
+.Holder {
     backdrop-filter: blur(9px);
     background-color: rgba(245, 245, 220, 0.2);
     justify-self: center;
     padding: 30px;
+    display:flex;
 }
 
 #btn {

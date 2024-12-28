@@ -1,105 +1,58 @@
-﻿
-<h2>Randevu Oluştur</h2>
+﻿@{
+    ViewData["Title"] = "Appointment Management";
+    var departments = ViewBag.Departments as List<Department>;
 
-<!-- Department Select Dropdown -->
-<select id="departmentSelect" name="departmentId" onchange="fetchEmployees()">
-    <option value="">-- Departman Seç --</option>
-    @foreach (var department in ViewBag.Departments)
-    {
-        <option value="@department.Name">@department.Name</option>
-    }
-</select>
+}
+<head>
+    <link href="@Url.Content("~/css/AppCreate.css")" rel="stylesheet" type="text/css" />
+</head>
 
-<!-- Employee Select Dropdown (Populated dynamically) -->
-@if (ViewBag.Employees != null)
-{
-    <select id="employeeSelect" name="employeeId" onchange="fetchAvailableTimes()">
-        <option value="">-- Çalışan Seç --</option>
-        @foreach (var employee in Model)
+
+<h2>Appointment Scheduling</h2>
+
+<form method="post" asp-controller="Appointment" asp-action="FetchEmployees">
+    <label for="departmentSelect">Departman Seç:</label>
+    <select id="departmentSelect" name="departmentName" onchange="this.form.submit()">
+        <option value="">-- Departman Seç --</option>
+        @if (ViewBag.Departments != null)
         {
-            <option value="@employee.Id">
-                @employee.Name - @employee.Dep.Name
-            </option>
+            foreach (var department in departments)
+            {
+                <option value="@department.Name">@department.Name</option>
+            }
         }
     </select>
-}
-else
+</form>
+
+@if (ViewBag.Employees != null)
 {
-    <select id="employeeSelect" name="employeeId"  >
-        <option value="">Employee</option>
-    </select>
+    <form method="post" asp-controller="Appointment" asp-action="FetchAvailableTimes">
+        <label for="employeeSelect">Çalışan Seç:</label>
+        <select id="employeeSelect" name="employeeName" onchange="this.form.submit()">
+            <option value="">-- Çalışan Seç --</option>
+            @foreach (var employee in ViewBag.Employees as List<Employee>)
+            {
+                <option value="@employee.FirstName @employee.LastName">@employee.FirstName @employee.LastName</option>
+            }
+        </select>
+    </form>
 }
 
-<!-- Available Times Select Dropdown -->
-<select id="availableTimesSelect" name="appointmentTime" >
-    <option value="">-- Uygun Saat Seç --</option>
-</select>
+@if (ViewBag.AvailableTimes != null)
+{
+    <form method="post" asp-controller="Appointment"  asp-action="FetchAvailableTimes">
+        <label for="availableTimesSelect">Müsait Saatler:</label>
+        <select id="availableTimesSelect" name="time">
+            <option value="">-- Saat Seç --</option>
+            @foreach (var time in ViewBag.AvailableTimes as List<string>)
+            {
+                <option value="@time">@time</option>
+            }
+        </select>
+    </form>
+}
+<form method="post" asp-controller="Appointment" asp-action="Create">
+    <button type="submit">Create Appointment</button>
+</form>
 
-@* <script>
-    function fetchEmployees() {
-        const departmentId = document.getElementById('departmentSelect').value;
-        const form = new FormData();
-        form.append("departmentId", departmentId);
 
-        fetch('/ControllerName/FetchEmployees', {
-            method: 'POST',
-            body: form
-        }).then(response => response.text())
-            .then(html => document.body.innerHTML = html);
-    }
-
-    function fetchAvailableTimes() {
-        const employeeId = document.getElementById('employeeSelect').value;
-        const date = new Date().toISOString().split('T')[0];
-
-        const form = new FormData();
-        form.append("employeeId", employeeId);
-        form.append("date", date);
-
-        fetch('/ControllerName/FetchAvailableTimes', {
-            method: 'POST',
-            body: form
-        }).then(response => response.text())
-            .then(html => document.body.innerHTML = html);
-    }
-</script>
- *@
-
-<script>
-    function fetchEmployees() {
-        const departmentId = document.getElementById('departmentSelect').value;
-        const form = new FormData();
-        form.append("departmentId", departmentId);
-
-        fetch('/ControllerName/FetchEmployees', {
-            method: 'POST',
-            body: form
-        })
-            .then(response => response.text())
-            .then(html => {
-                // Update only the Employee dropdown part of the page
-                document.getElementById('employeeSelectContainer').innerHTML = html;
-            })
-            .catch(error => console.error('Error fetching employees:', error));
-    }
-
-    function fetchAvailableTimes() {
-        const employeeId = document.getElementById('employeeSelect').value;
-        const date = new Date().toISOString().split('T')[0];
-
-        const form = new FormData();
-        form.append("employeeId", employeeId);
-        form.append("date", date);
-
-        fetch('/ControllerName/FetchAvailableTimes', {
-            method: 'POST',
-            body: form
-        })
-            .then(response => response.text())
-            .then(html => {
-                // Update only the Available Times dropdown part of the page
-                document.getElementById('availableTimesSelect').innerHTML = html;
-            })
-            .catch(error => console.error('Error fetching available times:', error));
-    }
-</script>

@@ -72,10 +72,15 @@ namespace b221210566_5_.Controllers
                 _context.DepEmployees.Add(depEmployee);
                 _context.SaveChanges();
             }
-            return RedirectToAction("Home","Team");
+            return RedirectToAction("AddSuccesed");
         }
 
-        
+        public IActionResult AddSuccesed()
+        {
+            ViewBag.Message = " Employee successfully added.";
+            return View();
+        } 
+
         private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)

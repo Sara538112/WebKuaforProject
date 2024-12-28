@@ -26,32 +26,38 @@ namespace b221210566_5_.Controllers
             ViewBag.Departments = _context.Departments.ToList();
             return View();
         }
-
         [HttpPost]
-        public IActionResult FetchEmployees(String departmentName)
+        public IActionResult fetchDepartments()
         {
             var departments = _context.Departments.ToList();
+            ViewBag.Departments = departments;
+            return View("Index");
+
+        }
+
+        [HttpPost]
+        public IActionResult FetchEmployees(string departmentName)
+        {
             var employees = _context.DepEmployees
                 .Where(e => e.Department.Name == departmentName)
+                .Include(e => e.Employee)
+                 .Select(e => e.Employee)
                 .ToList();
-
-            ViewBag.Departments = departments;
             ViewBag.Employees = employees;
+
             return View("Index");
         }
 
         [HttpPost]
         public IActionResult FetchAvailableTimes(string employeeName, DateOnly date)
         {
-            // Belirli bir çalışanın belirli bir tarihteki uygun saatlerini al
             var availableTimes = GetAvailableTimes(employeeName, date);
 
-            // ViewBag ile uygun saatleri görünüme gönder
             ViewBag.AvailableTimes = availableTimes;
             return View("Index");
         }
 
-        public string GetAvailableTimes(string employeeId, DateOnly date)
+        public List<string> GetAvailableTimes(string employeeId, DateOnly date)
         {
             // Çalışanın belirli bir tarihteki randevularını al
             var appointments = _context.appointmentEmployees
@@ -59,10 +65,11 @@ namespace b221210566_5_.Controllers
                 .Select(a => a.Appointment.Time)
                 .ToList();
 
-            // Tüm zaman aralıklarını oluştur (09:00'dan 17:00'ye kadar saat başı)
+            //Tüm zaman aralıklarını oluştur(09:00'dan 17:00'ye kadar saat başı)
             var allTimes = Enumerable.Range(9, 9) // Saatler: 9, 10, ..., 17
                 .Select(hour => TimeOnly.FromTimeSpan(new TimeSpan(hour, 0, 0))) // Saatleri TimeOnly'e dönüştür
                 .ToList();
+
 
             // Uygun saatleri belirle
             var availableTimes = allTimes
@@ -71,10 +78,44 @@ namespace b221210566_5_.Controllers
                 .ToList();
 
             // Saatleri düz bir string olarak döndür (virgülle ayrılmış)
-            return string.Join(",", availableTimes);
+            return availableTimes;
+        }
+        [HttpPost]
+        public IActionResult create(Department dep , Employee employee , TimeOnly time)
+        {
+            var AppEmployee = _context.Employees.FirstOrDefault(e => e.Id == employee.Id);
+
+
+            AppointmentEmployee appointmentEmployee = new AppointmentEmployee();
+           appointmentEmployee.Employee = employee;
+           
+           DepEmployee depEmployee1 = new DepEmployee();
+            depEmployee1.Employee = employee;
+            depEmployee1.Department = dep;
+
+            Appointments appointments = new Appointments()
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1).Date),
+                Time = time,
+            };
+            DepEmployee depEmployee = new DepEmployee()
+            {
+                Department = dep,
+            };
+           
+            
+            _context.appointments.Add(appointments);
+            _context.SaveChanges();
+
+        
+            return View("AddSuccesed");
+        }
+        public IActionResult AddSuccesed()
+        {
+            ViewBag.Message = " Appointment successfully added.";
+            return View();
         }
 
-       
 
     }
 

@@ -62,26 +62,20 @@ namespace b221210566_5_.Controllers
 
             return View(appointments);
         }
-
-        [Authorize(Roles = "Employee,Manager,Admin")]
+        [HttpPost]
         public IActionResult Scudule(DateOnly date)
         {
 
             var totalapp = _context.appointments
-               .Where(a => a.Date == date)
-               .Include(a => a.AppNo)
-               .Include(a => a.Date)
-               .Include(a => a.Time)
-               .Include(a => a.AppointmentEmployees)
+                .Where(a => a.Date == date)
+                .Include(a => a.AppointmentEmployees)
                     .ThenInclude(ae => ae.Employee)
-               .Include(a => a.Period)
-               .Include(a => a.Approved)
-               .ToList();
+                .ToList();
+
             return View(totalapp);
-
-
         }
         [HttpPost]
+
         [Authorize(Roles = "Manager,Admin")]
         public IActionResult SubmitApprovals(List<Appointments> appointments)
         {

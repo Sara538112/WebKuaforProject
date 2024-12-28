@@ -2,8 +2,9 @@
     string viewBag = ViewBag.Message;
 }
 
-<h2>Manager Added Successfully</h2>
-
+<h2>
+    @viewBag
+</h2>
 @if (viewBag != null)
 {
     <div class="alert alert-success">

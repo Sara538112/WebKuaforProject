@@ -30,18 +30,26 @@ namespace b221210566_5_.Controllers
         [HttpPost]
         public async Task<IActionResult> AddManagerAsync(UserRegisterDTO usr) 
         {
-            User mng = new User()
+            Manager mng = new Manager()
             {
                 Email = usr.Email,
                 FirstName = usr.FirstName,
                 LastName = usr.LastName,
             };
+
+
+
             await _userStore.SetUserNameAsync(mng, usr.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(mng, usr.Email, CancellationToken.None);
             var result = await _userManager.CreateAsync(mng, usr.Password);
             if (result.Succeeded)
             {
+                var test = _context.Manager.ToList();
                 await _userManager.AddToRoleAsync(mng, "Manager");
+                _context.Manager.Add(mng);
+                _context.SaveChanges();
+
+
             }
             return RedirectToAction("AddSuccesed");
         }

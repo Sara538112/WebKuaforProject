@@ -14,7 +14,6 @@ namespace b221210566_5_.Models
         public string EmployeeId { get; set; } 
         public Employee Employee { get; set; }
 
-        public String AvaliableTime {  get; set; }  
 
     }
 }
