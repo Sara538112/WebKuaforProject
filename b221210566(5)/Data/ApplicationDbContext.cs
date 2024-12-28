@@ -1,4 +1,4 @@
-﻿using b221210566_5_.Models;
+using b221210566_5_.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -89,3 +89,4 @@ namespace b221210566_5_.Data
         }
     }
 }
+
