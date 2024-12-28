@@ -1,0 +1,33 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().AppNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.AppNo">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+       
+    </tbody>
+</table>
