@@ -16,7 +16,7 @@ namespace b221210566_5_.Controllers
         {
             List<Appointments> appointments = new List<Appointments>();
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://localhost:7030/api/YazarApi/");
+            var response = await httpClient.GetAsync("https://localhost:7177/api/ApiConsumeController/");
             var jsondata = await response.Content.ReadAsStringAsync();
             appointments = JsonConvert.DeserializeObject<List<Appointments>>(jsondata);
             return View(appointments);
