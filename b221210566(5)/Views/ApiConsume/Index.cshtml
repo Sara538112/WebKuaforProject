@@ -22,9 +22,11 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Time)
                     </td>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@item.AppNo">Delete</a>
-                    </td>
+                     <form action="@Url.Action("Delete", "ApiConsume", new { no = item.AppNo })" method="post" style="display:inline;">
+                         <button type="submit" class="btn btn-danger">
+                             Delete
+                         </button>
+                        </form>
                 </tr>
             }
         }
