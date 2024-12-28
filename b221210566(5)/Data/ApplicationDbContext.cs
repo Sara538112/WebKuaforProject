@@ -69,7 +69,6 @@ namespace b221210566_5_.Data
              
 
 
-
             var adminId = Guid.NewGuid().ToString();
 
             builder.Entity<IdentityRole>().HasData(
@@ -78,32 +77,7 @@ namespace b221210566_5_.Data
                 new IdentityRole { Name = "Manager", NormalizedName = "MANAGER" },
                 new IdentityRole { Name = "Customer", NormalizedName = "CUSTOMER" }
             );
-
-            var adminUserId = Guid.NewGuid().ToString(); // Sabit ID
-            var adminUser = new User
-            {
-                Id = adminUserId,
-                FirstName = "Sara",
-                LastName = "Mohamed",
-                Email = "b221210566@ogr.sakarya.edu.tr",
-                NormalizedEmail = "B221210566@OGR.SAKARYA.EDU.TR",
-                EmailConfirmed = true,
-                PasswordHash = new PasswordHasher<User>().HashPassword(null, "sau"),
-                SecurityStamp = Guid.NewGuid().ToString("D"),
-            };
-
-            builder.Entity<User>().HasData(adminUser);
-
-            // Admin Kullanıcıya Rol Ekleme (UserRole tablosu seedleme)
-            builder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                {
-                    RoleId = adminId, // Admin rol ID'si
-                    UserId = adminUserId// Admin kullanıcı ID'si
-                });
-
-
-
+            // the code here was for default ad
             builder.Entity<Department>().HasData(
                 new Department { Id = 1, Name = "Hair Cut"},
                 new Department { Id = 2, Name = "Hair Care"},

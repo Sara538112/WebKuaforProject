@@ -44,10 +44,10 @@
 
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ApprovedScudule">Scudule</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ApprovedScudule">ApprovalScudule</a>
                             </li>
                         }
-                        @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
+                        @if (User.IsInRole("Employee") || User.IsInRole("Manager") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Scudule">Scudule</a>

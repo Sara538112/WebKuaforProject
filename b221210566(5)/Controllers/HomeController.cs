@@ -43,6 +43,31 @@ namespace b221210566_5_.Controllers
 
         }
 
+        //[Authorize(Roles = "Employee,Manager,Admin")]
+        public IActionResult Scudule(DateOnly date)
+        {
+            date = DateOnly.FromDateTime(DateTime.Now.AddDays(1).Date);
+            if (User.IsInRole("Employee") || User.IsInRole("Manager") || User.IsInRole("Admin"))
+            {
+
+                //var totalapp = _context.appointments// 
+                ////.Where(a => a.Date == date)
+                //.Include(a => a.AppointmentEmployees)
+                //.ThenInclude(ae => ae.Employee)
+                //.ToList();
+                var totalapp = _context.appointmentEmployees
+                    .Include(x => x.Appointment)
+                    .Include(x => x.Employee)
+                    .ThenInclude(emp => emp.DepEmployees)
+                    .ThenInclude(depemp => depemp.Department)
+                    .Where(x => x.Appointment.Date == date)
+                    .ToList();
+                var test = _context.appointmentEmployees.ToList();
+                return View(totalapp);
+            }
+            return View();
+
+        }
 
         [Authorize(Roles = "Customer")]
         public IActionResult MyAppointments()
@@ -62,18 +87,8 @@ namespace b221210566_5_.Controllers
 
             return View(appointments);
         }
-        [HttpPost]
-        public IActionResult Scudule(DateOnly date)
-        {
+       
 
-            var totalapp = _context.appointments
-                .Where(a => a.Date == date)
-                .Include(a => a.AppointmentEmployees)
-                    .ThenInclude(ae => ae.Employee)
-                .ToList();
-
-            return View(totalapp);
-        }
         [HttpPost]
 
         [Authorize(Roles = "Manager,Admin")]

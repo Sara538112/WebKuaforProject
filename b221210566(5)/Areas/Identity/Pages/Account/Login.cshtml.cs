@@ -26,12 +26,42 @@ namespace b221210566_5_.Areas.Identity.Pages.Account
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger , ApplicationDbContext context)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, ApplicationDbContext context, UserManager<User> userManager, IUserStore<User> userStore)
         {
             _signInManager = signInManager;
             _logger = logger;
             _context = context;
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
+            RegisterAdminIfNotExsist();
+        }
+
+        private void RegisterAdminIfNotExsist()
+        {
+            var adminUser = new User
+            {
+                FirstName = "Sara",
+                LastName = "Mohamed",
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+            };
+            var adminUsers = _userManager.GetUsersInRoleAsync("Admin").Result;
+            if (!adminUsers.Any())
+            {
+                _userStore.SetUserNameAsync(adminUser, "b221210566@ogr.sakarya.edu.tr", CancellationToken.None).Wait();
+                _emailStore.SetEmailAsync(adminUser, "b221210566@ogr.sakarya.edu.tr", CancellationToken.None).Wait();
+                var result = _userManager.CreateAsync(adminUser, "sau").Result;
+                if (result.Succeeded)
+                {
+                    _userManager.AddToRoleAsync(adminUser, "Admin").Wait();
+
+                }
+            }
         }
 
         /// <summary>
@@ -147,6 +177,14 @@ namespace b221210566_5_.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private IUserEmailStore<User> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<User>)_userStore;
         }
     }
 }

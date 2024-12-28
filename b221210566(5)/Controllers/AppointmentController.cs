@@ -14,6 +14,8 @@ namespace b221210566_5_.Controllers
     {
         private readonly ILogger<AppointmentController> _logger;
         private readonly ApplicationDbContext _context;
+        private static Employee _selectedEmployee;
+        private static Department _selectedDepartment;
 
         public AppointmentController(ILogger<AppointmentController> logger, ApplicationDbContext context)
         {
@@ -38,6 +40,7 @@ namespace b221210566_5_.Controllers
         [HttpPost]
         public IActionResult FetchEmployees(string departmentName)
         {
+            _selectedDepartment = _context.Departments.AsNoTracking().FirstOrDefault(x => x.Name == departmentName);
             var employees = _context.DepEmployees
                 .Where(e => e.Department.Name == departmentName)
                 .Include(e => e.Employee)
@@ -59,9 +62,10 @@ namespace b221210566_5_.Controllers
 
         public List<string> GetAvailableTimes(string employeeId, DateOnly date)
         {
-            // Çalışanın belirli bir tarihteki randevularını al
-            var appointments = _context.appointmentEmployees
-                .Where(a => a.Employee.Id == employeeId && a.Appointment.Date == date)
+            _selectedEmployee = _context.Employees.AsNoTracking().FirstOrDefault(x => x.Id == employeeId);
+
+            var appointments = _context.appointmentEmployees.Where(x=>x.EmployeeId == employeeId)
+                .Include(x=>x.Appointment)
                 .Select(a => a.Appointment.Time)
                 .ToList();
 
@@ -81,17 +85,16 @@ namespace b221210566_5_.Controllers
             return availableTimes;
         }
         [HttpPost]
-        public IActionResult create(Department dep , Employee employee , TimeOnly time)
+        public IActionResult create(TimeOnly time)
         {
-            var AppEmployee = _context.Employees.FirstOrDefault(e => e.Id == employee.Id);
+            var employee = _selectedEmployee;
+            var dep = _selectedDepartment;
+            var AppEmployee = _context.Employees.AsNoTracking().FirstOrDefault(e => e.Id == employee.Id);
 
 
             AppointmentEmployee appointmentEmployee = new AppointmentEmployee();
-           appointmentEmployee.Employee = employee;
-           
-           DepEmployee depEmployee1 = new DepEmployee();
-            depEmployee1.Employee = employee;
-            depEmployee1.Department = dep;
+            DepEmployee depEmployee1 = new DepEmployee();
+
 
             Appointments appointments = new Appointments()
             {
@@ -102,13 +105,15 @@ namespace b221210566_5_.Controllers
             {
                 Department = dep,
             };
-           
-            
+
+
             _context.appointments.Add(appointments);
             _context.SaveChanges();
-
-        
-            return View("AddSuccesed");
+            appointmentEmployee.AppointmentId = appointments.AppNo;
+            appointmentEmployee.EmployeeId = employee.Id;
+            _context.appointmentEmployees.Add(appointmentEmployee);
+            _context.SaveChanges();
+            return RedirectToAction("AddSuccesed");
         }
         public IActionResult AddSuccesed()
         {

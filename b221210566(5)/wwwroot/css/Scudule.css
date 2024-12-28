@@ -1,0 +1,16 @@
+﻿body {
+    backdrop-filter: blur(9px);
+    background-color: rgba(245, 245, 220, 0.2);
+    justify-self: center;
+    padding: 30px;
+    color: white;
+}
+tbody {
+    background-color: forestgreen;
+}
+table th {
+    color: white;
+}
+table td {
+    color: white;
+}

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using b221210566_5_.Data;
@@ -11,9 +12,11 @@ using b221210566_5_.Data;
 namespace b221210566_5_.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241228134711_updatescudule")]
+    partial class updatescudule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,25 +53,25 @@ namespace b221210566_5_.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9771c6aa-31b5-4e55-ae82-1421147c40cf",
+                            Id = "8ba67bcf-afeb-4e4c-aab9-242cc3331986",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2498bcb2-99b4-4268-99d7-7dc72c3720c4",
+                            Id = "e8fcedd5-4f83-4f72-9598-f7433a04264f",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "66e0a493-71d4-420e-b5cf-dbd0be8fed3b",
+                            Id = "8cc4c8fe-ce59-432f-ac7d-a2af8ccbbc10",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "55ff4d55-f823-464b-9906-f7c0f4a1b174",
+                            Id = "84a41221-2ffa-478c-a4b4-9fd4b12db92b",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -161,6 +164,13 @@ namespace b221210566_5_.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "433cf001-adaf-4bd9-bb5a-1015bc681177",
+                            RoleId = "8ba67bcf-afeb-4e4c-aab9-242cc3331986"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -420,6 +430,24 @@ namespace b221210566_5_.Migrations
                     b.HasDiscriminator().HasValue("User");
 
                     b.UseTphMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "433cf001-adaf-4bd9-bb5a-1015bc681177",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8e064ee2-4c3d-407d-bbf4-d402ecfa97a6",
+                            Email = "b221210566@ogr.sakarya.edu.tr",
+                            EmailConfirmed = true,
+                            FirstName = "Sara",
+                            LastName = "Mohamed",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "B221210566@OGR.SAKARYA.EDU.TR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEMQ5AFcjoSOtJO6Z/hELFMUvQDREjdnMk6hMTqlPFj32uwmHNNx3DJwkNRwtrKAUQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f5061079-c252-4ef6-99c0-852970cfee19",
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("b221210566_5_.Models.Employee", b =>

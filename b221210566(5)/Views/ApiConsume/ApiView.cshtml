@@ -1,0 +1,39 @@
+﻿@model IEnumerable<b221210566_5_.Models.Appointments>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(Model => Model.AppNo)
+            </th>
+            <th>
+                
+                @Html.DisplayNameFor(Model => Model.AppointmentEmployees)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentEmployees)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.AppNo">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

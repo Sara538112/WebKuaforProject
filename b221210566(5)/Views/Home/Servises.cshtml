@@ -23,6 +23,14 @@
        "Pamper your hands with our luxurious manicure services. From nail shaping to creative designs, we bring elegance and style to your fingertips. Treat yourself to a flawless finish and soft, beautiful hands.",
        "Relax and rejuvenate with our premium pedicure treatments. Enjoy exfoliation, hydration, and nail care for feet that look and feel amazing. Step out with confidence and comfort after a session of indulgence."
     };
+    List<String> price = new List<String>
+    {
+        "100" , "500" , "400" , "300" , "300"
+    };
+    List<String> sure = new List<String>
+    {
+        "45 dk" , "60 dk" , "60 dk" , "60 dk" , "45 dk"
+    };
 
 }
 <head>
@@ -38,6 +46,8 @@
                     <img  src="~/image/@imageUrls[i]"  />
                 </div>
                 <p>@description[i]</p>
+                <h3>@price</h3>
+                <h3>@sure</h3>
             </div>
         }
     </div>
@@ -50,6 +60,8 @@
                     <img  src="~/image/@imageUrls[i]" />
                 </div>
                 <p>@description[i]</p>
+                <h3>@price</h3>
+                <h3>@sure</h3>
             </div>
         }
     </div>
@@ -63,6 +75,8 @@
                 <img  src="~/image/@imageUrls[i]" />
             </div>
             <p>@description[i]</p>
+            <h3>@price</h3>
+            <h3>@sure</h3>
         </div>
     }
 </div>

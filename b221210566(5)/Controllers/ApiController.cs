@@ -16,35 +16,29 @@ namespace b221210566_5_.Controllers
         {
             _context = context;
         }
-        //public async Task<IActionResult> index()
-        //{
-        //    List<Appointments> Appointments = new List<Appointments>();
-        //    var httpClient = new HttpClient();
-        //    var respone = await httpClient.GetAsync("http:/localhost:7177/api");
-        //    var jsondata=await respone.Content.ReadAsStringAsync();
-        //    var appointments = JsonConvert.DeserializeObject<List<Appointments>>(jsondata);
-        //    return View(appointments);
-        //}
-
-        // DELETE: api/AppointmentApi/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppointment(int id)
+        [HttpGet("{no}")]
+        public ActionResult<Appointments> get(int no)
         {
-            // Find the appointment by its ID
-            var appointment = await _context.appointments.FindAsync(id);
+            var App = _context.appointments.FirstOrDefault(x => x.AppNo ==no );
+            if (App is null)
+            {
+                return NoContent();
+            }
+            return App;
 
-            // If the appointment doesn't exist, return a 404 Not Found
-            if (appointment == null)
+        }
+        [HttpDelete("{no}")]
+        public ActionResult Delete(int no)
+        {
+            var App =_context.appointments.FirstOrDefault(x => x.AppNo == no);
+            if (App is null)
             {
                 return NotFound();
             }
-
-            // Remove the appointment from the database
-            _context.appointments.Remove(appointment);
-            await _context.SaveChangesAsync();
-
-            // Return a success message
-            return NoContent();
+          
+            _context.appointments.Remove(App);
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }
