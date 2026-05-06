@@ -1,8 +1,8 @@
 # Beauty Corner – Online Beauty Salon Reservation System 💇‍♀️
 
 > ASP.NET MVC Web Application — Sakarya University  
-> Course: Web Programlama (2024-2025 Güz Dönemi)  
-> 🔗 [GitHub Repository](https://github.com/Sara538112/WebKuaforProject.git)
+> Course: Web Programlama
+
 
 ## Overview
 
