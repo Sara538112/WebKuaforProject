@@ -73,10 +73,10 @@ Beauty Corner is a full-stack web application for managing a beauty salon's dail
 ---
 
 ## Roles
--Admin     → Full access
--Manager   → Approve/manage schedules
--Employee  → View assigned appointments
--Customer  → Create and view appointments
+- **Admin**     → Full access
+- **Manager**   → Approve/manage schedules
+- **Employee**  → View assigned appointments
+- **Customer**  → Create and view appointments
 
 ---
 
